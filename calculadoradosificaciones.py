@@ -1,6 +1,8 @@
 # Calculadora para cantidades de materiales para dosificaciones de concreto
 # Author: Ingeniero Jose Luis Puente Rodriguez
 
+import math
+
 def calculadora_concreto():
     print("Calculadora de materiales para dosificaciones de concreto\n")
 
@@ -20,7 +22,6 @@ def calculadora_concreto():
     print("Seleccione la resistencia que desea:")
     for key, data in resistencias.items():
         print(f"{key}. {data['nombre']}")
-    print("\n")
 
     # Solicitar al usuario que seleccione una opción
     opcion = input("\nIngresa el número (1-5): ").strip()
@@ -40,19 +41,22 @@ def calculadora_concreto():
         print(f"Error, ingrese un número válido por favor.")
         return
     # Calcular la cantidad de materiales necesarios
-    sacos_cemento = cantidad_m3 / mezcla["rendimiento_1m3"]
+    sacos_cemento = math.ceil((cantidad_m3 / mezcla["rendimiento_1m3"])* 1.05)  # Agregar 5% de desperdicio
     arena = sacos_cemento * mezcla["arena"]
     grava = sacos_cemento * mezcla["grava"]
     agua = sacos_cemento * mezcla["agua"]
 
     # Imprimir los resultados
     print(f"\nMateriales necesarios para {cantidad_m3} m³ de concreto:")
-    print(f"Sacos de cemento: {sacos_cemento:.2f}")
-    print(f"Arena (en baldes de 19 litros): {arena:.2f}")
-    print(f"Grava (en baldes de 19 litros): {grava:.2f}")
-    print(f"Agua (en baldes de 19 litros): {agua:.2f}")
-
-    # TODO: redondear los botes al número entero más alto 
+    print(f"Sacos de cemento (50 kg): {sacos_cemento:.2f}")
+    print(f"Arena (en botes): {arena:.2f}")
+    print(f"Grava (en botes): {grava:.2f}")
+    print(f"Agua (en botes): {agua:.2f}")
+    print("""
+    Nota: Recuerde que estas cantidades son aproximadas y los volumenes 
+    pueden cambiar segun las condiciones del colado.\n""")
+    # TODO: Arrojar un CSV o un PDF con la lista de materiales.
+    # TODO: Mostrar resultados con cantidades en metros cúbicos o toneladas para arena y grava.
 
 # Ejecutar programa
 if __name__ == "__main__":
